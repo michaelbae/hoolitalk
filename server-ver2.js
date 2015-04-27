@@ -1,3 +1,6 @@
+//!!!!!!!!!!!!!
+//ASSUMPTION: Seasons lastUpdated is the indication of table or fixtures udpate
+
 //Retrieve existing DBs
 Leagues = new Mongo.Collection("leagues");
 
@@ -49,7 +52,7 @@ if (Meteor.isServer){
             var leagueData = Meteor.call("getLeague");
             var leagueJSON = Meteor.call("parse", leagueData);
             ListOfLeagues to be updated = Meteor.call("updateLeague", leagueJSON);
-
+			//maybe use mongo.cursor
             for (i=0; i<ListOfLeaguesId.length; i++){
 				var fixturesData = Meteor.call("getFixtures", ListOfLeaguesId[i]);
 				var fixturesJSON = Meteor.call("parse", fixturesData)
@@ -129,9 +132,9 @@ if (Meteor.isServer){
 
 client
 1. league page - league.find()
-(pass a league's fixture DB)
+(user click a league : pass a league's fixture DB)
 2. upcoming fixtures - fixturesDB.find(where date is p3n3)
-(pass a match DB)
+(user click a match: pass a match DB)
 3. match's yak - matchDB.find() 
 
 
