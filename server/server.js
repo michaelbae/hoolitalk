@@ -55,7 +55,6 @@ if (Meteor.isServer){
             }
             return listOfUpdatedLeaguesNumber;
         }, 
-
 		//update a season's worth of fixtures of a specific league
         updateFixture: function(listOfLeagueIds){
 
