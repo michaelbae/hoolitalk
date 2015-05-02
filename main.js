@@ -8,15 +8,23 @@ Comments = new Mongo.Collection("comments");
 
 Router.map(function () {
   this.route('leagues', {
-  	path: '/leagues', 
-  });  // By default, path = '/about', template = 'about'
+  	path: '/leagues' 
+  }); 
+
   this.route('login', {
-    path: '/',  //overrides the default '/home'
+    path: '/'
   });
+
   this.route('fixtures', {
   	path: '/leagues/:soccerseasons/fixtures',
-  	data: function () {return Fixtures.find({leagueId: this.params.soccerseasons})},
+  	data: function () {return Fixtures.find({leagueId: this.params.soccerseasons})}
   });
+
+  this.route('yaks', {
+  	path: '/leagues/:leagueId/fixtures/:fixtureId/yaks',
+  	data: function () {return Yaks.find({fixtureId: this.params.fixtureId})}
+  });
+
 
   // this.route('articles', {
   //   data: function () {return Articles.find()}  //set template data context
