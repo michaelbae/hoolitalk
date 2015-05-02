@@ -8,3 +8,7 @@ meteor-platform
 autopublish
 insecure
 http
+iron:router
+accounts-ui
+accounts-password
+accounts-facebook

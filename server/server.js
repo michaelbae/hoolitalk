@@ -1,10 +1,5 @@
 //!!!!!!!!!!!!!
 //ASSUMPTION: Seasons lastUpdated is the indication of table or fixtures udpate
-
-//Retrieve existing DBs
-Leagues = new Mongo.Collection("leagues");
-Fixtures = new Mongo.Collection("fixtures");
-
 Meteor.startup(function () {
     if (Meteor.isServer){
 		
