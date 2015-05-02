@@ -5,41 +5,29 @@ Fixtures = new Mongo.Collection("fixtures");
 Yaks = new Mongo.Collection("yaks");
 Comments = new Mongo.Collection("comments");
 
-Router.map(function(){
 
-	this.route('login', {path: '/'});
+Router.map(function () {
+  this.route('leagues', {
+  	path: '/leagues', 
+  });  // By default, path = '/about', template = 'about'
+  this.route('login', {
+    path: '/',  //overrides the default '/home'
+  });
+  this.route('fixtures', {
+  	path: '/fixtures/:soccerseasons',
+  	data: function () {return Fixtures.find({leagueId: this.params.soccerseasons})},
+  });
 
-	this.route('leagues', {path: '/leagues'});
+  // this.route('articles', {
+  //   data: function () {return Articles.find()}  //set template data context
+  // });
+  // this.route('article', {
+  //   path: '/article/:_id',
+  //   data: function () {return Articles.findOne({_id: this.params._id})},
+  //   template: 'fullArticle'
+  // });
 });
 
-var mustBeSignedIn = function(){
-	if (!(Meteor.user() || Meteor.loggingIn())) {
-		Router.go('login');
-	} else {
-		this.next();
-	}
-
-};
-
-var goLeagues = function(){
-	if (Meteor.user()){
-		Router.go('leagues');
-	} else {
-		this.next();
-	}
-};
-
-
-Router.onBeforeAction(mustBeSignedIn, {except: ['login']});
-Router.onBeforeAction(goLeagues, {only: ['login']});
-
-
-// Router.route('/', {name: 'stringline'})
-
-// Router.route('/login', {name: 'login'})
-// Router.route('/', {name: 'login'})
-
-// Router.route('/leagues', {name: 'leagues'})
 
 
 // Router.route('/leagues/:_id1/fixtures', {

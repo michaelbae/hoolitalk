@@ -1,0 +1,13 @@
+<template name="fixtures">
+	<form class="fixtureSubmitForm">
+	  {{#each fixtures}}
+		{{>fixture}}<br>
+	  {{/each}}
+	</form>
+</template>
+
+<template name="fixture">
+	<li>
+    {{fixtureId}} : {{homeTeamName}} VS {{awayTeamName}} - {{date}}
+  </li>
+</template>

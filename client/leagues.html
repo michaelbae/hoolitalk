@@ -1,9 +1,14 @@
 <template name="leagues">
 	<form class="leagueSubmitForm">
 	  {{#each leagues}}
-		<button type="button" value = {{soccerseasons}} >
-		    {{caption}}<br>
-		</button>
+		{{>league}}<br>
 	  {{/each}}
 	</form>
 </template>
+
+<template name="league">
+	<li>
+		<a href="{{ pathFor 'fixtures' }}"> {{caption}} </a>
+	</li>
+</template>
+

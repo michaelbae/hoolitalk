@@ -4,3 +4,10 @@ Template.leagues.helpers({
     }
 })
 
+// Template.league.events({
+
+//     "click .enter": function () {
+//       //Meteor.call("deleteTask", this.soccerseasons);
+//       Router.go('fixtures');
+//     }
+// });

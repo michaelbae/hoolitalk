@@ -8,9 +8,9 @@ Meteor.startup(function () {
 
        // Update server every 24 hours to store the updated leagues and fixtures
         // 86400000 milliseconds = 24 Hours
-        setInterval(Meteor.call("updateDB"), 86400000); 
+        //setInterval(Meteor.call("updateDB"), 86400000); 
 
-		//Meteor.call("adminYak");
+		//Meteor.call("updateDB");
     }
 });
 
