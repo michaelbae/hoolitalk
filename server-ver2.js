@@ -7,9 +7,10 @@ Fixtures = new Mongo.Collection("fixtures");
 
 Meteor.startup(function () {
     if (Meteor.isServer){
-		//once in 24hr    
-        Leagues.remove({});
-        Fixtures.remove({});
+		
+        //once in 24hr    
+        //Leagues.remove({});
+        //Fixtures.remove({});
 
         Meteor.call("updateDB");
 		//Meteor.call("adminYak");
@@ -63,11 +64,13 @@ if (Meteor.isServer){
 
             //#of leagues
             for (i=0; i<listOfLeagueIds.length; i++) {
-                //Fixtures.insert({leagueId: listOfLeagueIds[i]});
+                
                  var fixturesData = Meteor.call("getFixtures", listOfLeagueIds[i]);
                  var fixturesJSON = Meteor.call("parse", fixturesData);
-                 //Fixtures.insert({test: fixturesJSON.data});
-                 Meteor.call("storeFixtures", fixturesJSON.data, listOfLeagueIds[i]);
+                 
+                for(j=0; j<fixturesJSON.data.fixtures.length; j++){  
+                    Meteor.call("storeFixtures", fixturesJSON.data.fixtures[j], listOfLeagueIds[i]);
+                }
             }
         }, 
 		
@@ -102,38 +105,35 @@ if (Meteor.isServer){
                 return leagueNumber;        
         },
 		
-		//store a season's worth of fixtures into DB
-        storeFixtures: function (leagueFixtures, leagueId) {
+		//store one fixture into DB
+        storeFixtures: function (singleFixture, leagueId) {
 
-            //Fixtures.insert({numberOfFixtures: leagueFixtures.fixtures.length});
-            for(i=0; i<leagueFixtures.fixtures.length; i++){         
-                
-                var uri = leagueFixtures.fixtures[i]._links.self.href;
+                var uri = singleFixture._links.self.href;
                 var fixtureNumber = uri.substr(uri.lastIndexOf('/') + 1);
-                Fixtures.insert({fixtureNumber: fixtureNumber});
-                // if (Fixtures.find({fixtureNumber : {$eq: fixtureNumber}}, {'fixtureNumber': 1}).count()>0){
-                //     Fixtures.update({fixtureNumber : {$eq: fixtureNumber}},{
-                //         date: leagueFixtures.fixtures[i].date,
-                //         status: leagueFixtures.fixtures[i].status,
-                //         matchday: leagueFixtures.fixtures[i].matchday,
-                //         homeTeamName: leagueFixtures.fixtures[i].homeTeamName,
-                //         awayTeamName: leagueFixtures.fixtures[i].awayTeamName,
-                //         result: leagueFixtures.fixtures[i].result,     
-                //         fixtureNumber: fixtureNumber,
-                //         leagueId: leagueId
-                //     })
-                // } else {
-                //     Fixtures.insert({
-                // 		date: leagueFixtures.fixtures[i].date,
-                // 		status: leagueFixtures.fixtures[i].status,
-                // 		matchday: leagueFixtures.fixtures[i].matchday,
-                // 		homeTeamName: leagueFixtures.fixtures[i].homeTeamName,
-                // 		awayTeamName: leagueFixtures.fixtures[i].awayTeamName,
-                //         result: leagueFixtures.fixtures[i].result,     
-                //         fixtureNumber: fixtureNumber,
-                //         leagueId: leagueId
-                // 	});
-                // }
-        	}
+                
+                if (Fixtures.find({fixtureId : {$eq: fixtureNumber}}, {'fixtureId': 1}).count()>0){
+                    Fixtures.update({fixtureId : {$eq: fixtureNumber}},{
+                        date: singleFixture.date,
+                        status: singleFixture.status,
+                        matchday: singleFixture.matchday,
+                        homeTeamName: singleFixture.homeTeamName,
+                        awayTeamName: singleFixture.awayTeamName,
+                        result: singleFixture.result,     
+                        fixtureId: fixtureNumber,
+                        leagueId: leagueId
+                    })
+                } else {
+                    Fixtures.insert({
+                	    date: singleFixture.date,
+                        status: singleFixture.status,
+                        matchday: singleFixture.matchday,
+                        homeTeamName: singleFixture.homeTeamName,
+                        awayTeamName: singleFixture.awayTeamName,
+                        result: singleFixture.result,     
+                        fixtureId: fixtureNumber,
+                        leagueId: leagueId
+                	});
+                }
+        	
         }
 })}
