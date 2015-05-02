@@ -14,7 +14,7 @@ Router.map(function () {
     path: '/',  //overrides the default '/home'
   });
   this.route('fixtures', {
-  	path: '/fixtures/:soccerseasons',
+  	path: '/leagues/:soccerseasons/fixtures',
   	data: function () {return Fixtures.find({leagueId: this.params.soccerseasons})},
   });
 
