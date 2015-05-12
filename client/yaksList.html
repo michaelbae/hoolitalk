@@ -1,0 +1,35 @@
+<template name="yaksList">
+	<div class="yaks">
+		<div class="form-style">
+			<div class="container">
+				<ul class="list-group">
+					<h3>Live feed of what people are saying around you</h3>
+					{{#each yaks}}
+						{{> yakItem}}
+					{{/each}}
+				</ul>
+			</div>
+		</div>
+	</div>
+	<form class="new-task">
+        <input type="text" name="text" placeholder="{{userLoggedIn}}" />
+    </form>
+</template>
+
+
+<!-- <template name="yaksList">
+	<form class="yaksSubmitForm">
+	  {{#each yaks}}
+		{{> yakItem}}<br>
+	  {{/each}}
+	</form>
+	<form class="new-task">
+        <input type="text" name="text" placeholder="{{userLoggedIn}}" />
+    </form>
+</template> -->
+
+<!-- <template name="yakItem">
+	<li>
+ 	   {{yak}} - score {{score}}, fixtureId: {{fixtureId}}
+  </li>
+</template> -->

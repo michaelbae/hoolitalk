@@ -8,7 +8,7 @@ Template.yaksSubmit.events({
 		if (yak == "") {
 			alert("You can't insert empty yak. Try to write something funny instead! :)");
 		} else {
-			Meteor.call('yakInsert', yak);
+			Meteor.call('yakInsert', yak, this);
 			/*post._id = Yaks.insert(post);*/
 			Router.go('yaksList');
 		}

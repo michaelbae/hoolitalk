@@ -132,16 +132,27 @@ Meteor.methods({
         	
         },
 
-        yakInsert: function(yak) {
+        yakInsert: function(yak, fixtureId) {
             var postId = Yaks.insert({
                 yak : yak, 
-                score : 0, 
-                submitted : new Date(), 
+                score : 0,
+                fixtureId: '136714', 
+                submitted : new Date()
             });
         }, 
 
         commentInsert: function(comment) {
             Comments.insert(comment);
+        },
+
+        addTask: function (text, fixtureId) {
+            Yaks.insert({
+              yak: text,
+              score : 0,
+              fixtureId: fixtureId, 
+              submitted: new Date(),
+              username: Meteor.user().username || Meteor.user().profile.name 
+            });
         }
 })
 

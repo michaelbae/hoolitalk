@@ -4,7 +4,10 @@ Leagues = new Mongo.Collection("leagues");
 Fixtures = new Mongo.Collection("fixtures");
 Yaks = new Mongo.Collection("yaks");
 Comments = new Mongo.Collection("comments");
+Test = new Mongo.Collection("test");
 
+var p = new Date(new Date().setDate(new Date().getDate()-3)).toISOString();
+var n = new Date(new Date().setDate(new Date().getDate()+3)).toISOString();
 
 Router.map(function () {
   this.route('leagues', {
@@ -15,48 +18,24 @@ Router.map(function () {
     path: '/'
   });
 
+  this.route('yaksSubmit', {
+    path: '/submit'
+  });
+
+  this.route('yakPage', {
+    path: '/yaks/:_id',
+    data: function() {return Yaks.findOne(this.params._id)}
+  });
+
   this.route('fixtures', {
-  	path: '/leagues/:soccerseasons/fixtures',
-  	data: function () {return Fixtures.find({leagueId: this.params.soccerseasons})}
+    path: '/leagues/:soccerseasons/fixtures',
+    data: function () {return this.params}
   });
 
-  this.route('yaks', {
-  	path: '/leagues/:leagueId/fixtures/:fixtureId/yaks',
-  	data: function () {return Yaks.find({fixtureId: this.params.fixtureId})}
+ this.route('yaksList', {
+   path: '/leagues/:leagueId/fixtures/:fixtureId/yaks',
+   data: function() {return this.params}
   });
-
-
-  // this.route('articles', {
-  //   data: function () {return Articles.find()}  //set template data context
-  // });
-  // this.route('article', {
-  //   path: '/article/:_id',
-  //   data: function () {return Articles.findOne({_id: this.params._id})},
-  //   template: 'fullArticle'
-  // });
+ 
 });
 
-
-
-// Router.route('/leagues/:_id1/fixtures', {
-// 	name: 'fixtures',
-// 	data: function() {
-// 		return Leagues.findOne(this.params._id1);
-// 	}
-// });
-
-
-
-// Router.route('/leagues/:_id/fixtures/:_id2/yaks', {
-// 	name: 'yaks',
-// 	data: function() {
-// 		return Fixtures.findOne(this.params._id2);
-// 	}
-// });
-
-// Router.route('/leagues/:_id/fixtures/:_id2/yaks/:_id3', {
-// 	name: 'comments',
-// 	data: function() {
-// 		return Yaks.findOne(this.params._id3);
-// 	}
-// });
