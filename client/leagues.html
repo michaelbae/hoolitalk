@@ -1,14 +1,20 @@
 <template name="leagues">
-	<form class="leagueSubmitForm">
-	  {{#each leagues}}
-		{{>league}}<br>
-	  {{/each}}
-	</form>
+	<div class="container-fluid">
+		<!-- <table style="width:100%" align="center"> -->
+		  {{#each leagues}}
+			{{>league}}
+		 {{/each}}
+		<!-- </table> -->
+	</div>
 </template>
 
 <template name="league">
-	<li>
-		<a href="{{ pathFor 'fixtures' }}"> {{caption}} </a>
-	</li>
+	<a class="btn btn-default" href="{{ pathFor 'fixtures' }}" role="button">
+		<div class="row">
+			<div class="col-xs-6"><p class="text-center">{{caption}}</p></div>
+			<div class="col-xs-6"><img class="img-responsive"  src="/img/{{league}}.jpg"></div>
+		</div>
+	</a>
 </template>
+
 

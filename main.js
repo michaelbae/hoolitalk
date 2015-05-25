@@ -10,32 +10,34 @@ var p = new Date(new Date().setDate(new Date().getDate()-3)).toISOString();
 var n = new Date(new Date().setDate(new Date().getDate()+3)).toISOString();
 
 Router.map(function () {
-  this.route('leagues', {
-  	path: '/leagues' 
-  }); 
-
+ 
   this.route('login', {
     path: '/'
   });
 
-  this.route('yaksSubmit', {
-    path: '/submit'
-  });
-
-  this.route('yakPage', {
-    path: '/yaks/:_id',
-    data: function() {return Yaks.findOne(this.params._id)}
-  });
+  this.route('leagues', {
+  	path: '/leagues' 
+  }); 
 
   this.route('fixtures', {
     path: '/leagues/:soccerseasons/fixtures',
     data: function () {return this.params}
   });
 
- this.route('yaksList', {
+  this.route('yaksList', {
    path: '/leagues/:leagueId/fixtures/:fixtureId/yaks',
    data: function() {return this.params}
   });
- 
+
+  this.route('yakSubmit', {
+    path: '/leagues/:leagueId/fixtures/:fixtureId/yaks/submit',
+    data: function() {return this.params}
+  });
+
+  this.route('yakPage', {
+    path: '/leagues/:leagueId/fixtures/:fixtureId/yaks/:yakId',
+    data: function() {return this.params}
+  });
+
 });
 
