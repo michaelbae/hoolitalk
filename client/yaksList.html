@@ -1,22 +1,38 @@
 <template name="yaksList">
-	<div class="yaks">
-		<div class="form-style">
-			<div class="container">
-				<ul class="list-group">
-					<h3>Live feed of what people are saying around you</h3>
-					{{#each yaks}}
-						{{> yakItem}}
-					{{/each}}
-				</ul>
-			</div>
-			<div>
-				<a class="btn btn-primary pull-right" type="button" href="{{ pathFor 'yakSubmit' }}"> Send Yak </a>
-			</div>
-		</div>
+	<div class="container">
+		<h5>Live feed of what people are saying about the match</h5>
+		{{#each yaks}}
+		<p class="bg-info">
+			{{> yakItem}}
+		</p>
+		{{/each}}
 	</div>
-	<form class="new-task">
+	<div class="btn-toolbar" role="toolbar" aria-label="...">
+		
+		<div class="btn-group" role="group" aria-label="..."><a class="btn btn-primary" type="button" href="{{ pathFor 'yakSubmit' }}"> New </a>
+		<a class="btn btn-danger" type="button" href="{{ pathFor 'yakSubmit' }}"> Hot </a>
+		</div>
+
+		<div class="btn-group pull-right" role="group" aria-label="..."><a class="btn btn-success" type="button" href="{{ pathFor 'yakSubmit' }}"> Send Yak </a></div>
+	</div>
+	<br>
+	<br>
+	<div class="col-lg-6">
+	    <div class="input-group">
+	      
+		   <input type="text" class="form-control" placeholder="Say what you think about the game">
+		    
+	      <span class="input-group-btn">
+	        <button class="btn btn-default" type="button">Submit</button>
+	      </span>
+	    </div><!-- /input-group -->
+	</div><!-- /.col-lg-6 -->
+
+	<!-- live chat -->
+
+	<!-- <form class="new-task">
         <input type="text" name="text" placeholder="{{userLoggedIn}}" />
-    </form>
+    </form> -->
 </template>
 
 

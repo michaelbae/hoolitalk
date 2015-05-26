@@ -20,7 +20,18 @@
 </template>  -->
 
 <template name="yakItem">
-	<li>
- 	   {{yak}} - score {{score}}, fixtureId: {{fixtureId}}
-  </li>
+		<div class="row">
+			<div class="col-xs-10">
+				<a href="www.google.ca">
+				  <p>{{yak}}</p></a>
+				  <footer>Michael Bae <cite title="Source Title">2w</cite></footer>
+					
+			</div>
+			<div class="col-xs-2" align="right">
+				<a class="btn pull-right btn-small yes" href="#"><i class="glyphicon glyphicon-chevron-up"></i></a>
+				<a class="btn pull-right" href="#"> {{score}} </a>
+				<a class="btn pull-right btn-small no" href="#"><i class="glyphicon glyphicon-chevron-down"></i></a>
+			</div>
+		</div>
+
 </template>
