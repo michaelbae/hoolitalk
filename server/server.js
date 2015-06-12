@@ -3,14 +3,14 @@
 Meteor.startup(function () {
     if (Meteor.isServer){
 		
-        //Leagues.remove({});
-        //Fixtures.remove({});
-
+        // Leagues.remove({});
+        // Fixtures.remove({});
+        
        // Update server every 24 hours to store the updated leagues and fixtures
         // 86400000 milliseconds = 24 Hours
-        //setInterval(Meteor.call("updateDB"), 86400000); 
+        //setInterval(Meteor.call("updateDB"), 86400000);
 
-		//Meteor.call("updateDB");
+        //Meteor.call("updateDB");
     }
 });
 
@@ -29,6 +29,14 @@ Meteor.methods({
             return Meteor.http.call("GET", "http://api.football-data.org/alpha/soccerseasons/" + leagueId + "/fixtures/", {headers: {"X-Auth-Token": "a87a67fb2885496bb1a5274e1eb79236"}});
         },
 
+        getTables: function (leagueId) {
+            return Meteor.http.call("GET", "http://api.football-data.org/alpha/soccerseasons/" + leagueId + "/leagueTable/", {headers: {"X-Auth-Token": "a87a67fb2885496bb1a5274e1eb79236"}});
+        },
+
+        getTeams: function (leagueId) {
+            return Meteor.http.call("GET", "http://api.football-data.org/alpha/soccerseasons/" + leagueId + "/teams/", {headers: {"X-Auth-Token": "a87a67fb2885496bb1a5274e1eb79236"}});
+        },
+
 		//parsing data
         parse: function(data) {
             var json = EJSON.stringify(data);
@@ -43,7 +51,9 @@ Meteor.methods({
             var leagueJSON = Meteor.call("parse", leagueData);
             var listOfUpdatedLeaguesId = Meteor.call("updateLeague", leagueJSON);
             //Fixtures.insert(listOfUpdatedLeaguesId);
-            Meteor.call("updateFixture", listOfUpdatedLeaguesId);
+            //Meteor.call("updateFixture", listOfUpdatedLeaguesId);
+            //Meteor.call("updateTable", listOfUpdatedLeaguesId);
+            Meteor.call("updateTeam", listOfUpdatedLeaguesId);
         },
 
 		//update information about one league/competition in mongoDB 
@@ -68,6 +78,35 @@ Meteor.methods({
                 }
             }
         }, 
+
+        updateTable: function(listOfLeagueIds){
+
+            for (i=0; i<listOfLeagueIds.length; i++){
+                if (listOfLeagueIds[i] != "362"){
+                    var tableData = Meteor.call("getTables", listOfLeagueIds[i]);
+                    var tableJSON = Meteor.call("parse", tableData);
+
+                    for(j=0; j<tableJSON.data.standing.length; j++){  
+                        Meteor.call("storeTable", tableJSON.data.standing[j], listOfLeagueIds[i]);
+                    }
+                }
+            }
+        },
+
+        updateTeam: function(listOfLeagueIds){
+
+            Teams.remove({});
+            
+            for (i=0; i<listOfLeagueIds.length; i++){
+                var leagueId = listOfLeagueIds[i];
+                var teamData = Meteor.call("getTeams", leagueId);
+                var teamJSON = Meteor.call("parse", teamData);
+
+                for(j=0; j<teamJSON.data.count; j++){  
+                        Meteor.call("storeTeam", teamJSON.data.teams[j], leagueId);
+                }    
+            }
+        },
 		
         //store data about one league/competition in mongoDB
         storeLeague: function (league) {
@@ -99,8 +138,8 @@ Meteor.methods({
                 }  
                 return leagueNumber;        
         },
-		
-		//store one fixture into DB
+
+        //store one fixture into DB
         storeFixtures: function (singleFixture, leagueId) {
 
                 var uri = singleFixture._links.self.href;
@@ -119,7 +158,7 @@ Meteor.methods({
                     })
                 } else {
                     Fixtures.insert({
-                	    date: singleFixture.date,
+                        date: singleFixture.date,
                         status: singleFixture.status,
                         matchday: singleFixture.matchday,
                         homeTeamName: singleFixture.homeTeamName,
@@ -127,10 +166,59 @@ Meteor.methods({
                         result: singleFixture.result,     
                         fixtureId: fixtureNumber,
                         leagueId: leagueId
-                	});
+                    });
                 }
-        	
         },
+
+        
+        storeTable: function (singleStanding, leagueId) {
+
+                var uri = singleStanding._links.team.href;
+                var teamNumber = uri.substr(uri.lastIndexOf('/') + 1);
+                
+                if (Tables.find({teamId : {$eq: teamNumber}}, {'teamId': 1}).count()>0){
+                    Tables.update({teamId : {$eq: teamNumber}},{
+                        position: singleStanding.position,
+                        teamName: singleStanding.teamName,
+                        playedGames: singleStanding.playedGames,
+                        points: singleStanding.points,
+                        goals: singleStanding.goals,
+                        goalsAgainst: singleStanding.goalsAgainst,     
+                        goalDifference: singleStanding.goalDifference,
+                        teamId: teamNumber,
+                        leagueId: leagueId
+                    })
+                } else {
+                    Tables.insert({
+                        position: singleStanding.position,
+                        teamName: singleStanding.teamName,
+                        playedGames: singleStanding.playedGames,
+                        points: singleStanding.points,
+                        goals: singleStanding.goals,
+                        goalsAgainst: singleStanding.goalsAgainst,     
+                        goalDifference: singleStanding.goalDifference,
+                        teamId: teamNumber,
+                        leagueId: leagueId
+                    });
+                }
+        },
+
+        storeTeam: function (singleTeam, leagueId) {
+
+            var uri = singleTeam._links.self.href;
+            var teamNumber = uri.substr(uri.lastIndexOf('/') + 1);
+            
+            Teams.insert({
+                    name: singleTeam.name,
+                    code: singleTeam.code,
+                    shortName: singleTeam.shortName,
+                    squadMarketValue: singleTeam.squadMarketValue,
+                    crestUrl: singleTeam.crestUrl,
+                    teamId: teamNumber,
+                    leagueId: leagueId
+            });
+        },
+
 
         yakInsert: function(yak, fixtureId) {
             var postId = Yaks.insert({

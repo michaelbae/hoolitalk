@@ -1,0 +1,42 @@
+<template name="table">
+	<div class="container-fluid">
+		<div class="panel panel-default">
+		  <!-- Default panel contents -->
+		  <div class="panel-heading">League Table</div>
+
+		  <!-- Table -->
+		  <table class="table table-striped">
+		    <thead>
+		      <tr>
+		        <th>#</th>
+		        <th>Team Logo</th>
+		        <th>Team Name</th>
+		        <th>Played Games</th>
+		        <th>Points</th>
+		        <th>Goals</th>
+		        <th>Goals Against</th>
+		      	<th>Goal Difference</th>
+		      </tr>
+		    </thead>
+		    <tbody>	    	
+			  {{#each standings}}
+				{{>standing}}
+			  {{/each}}
+		    </tbody>
+		  </table>
+		</div>
+	</div>
+</template>
+
+<template name="standing">
+	<tr>
+        <td>{{position}}</td>
+        <td><img class="img-responsive" width="150" height="150" src="http://upload.wikimedia.org/wikipedia/commons/c/c5/Logo_FC_Bayern_M%C3%BCnchen.svg"></td>
+        <td>{{teamName}}</td>
+        <td>{{playedGames}}</td>
+        <td>{{points}}</td>
+        <td>{{goals}}</td>
+        <td>{{goalsAgainst}}</td>
+        <td>{{goalDifference}}</td>
+	</tr>
+</template>
