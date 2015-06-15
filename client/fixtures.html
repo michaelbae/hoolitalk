@@ -9,9 +9,9 @@
 <template name="fixture">
 	<a class="btn btn-default" href="{{ pathFor 'yaksList' }}" role="button">
 		<div class="row">
-			<div class="col-xs-2"><img class="img-responsive"  src="http://upload.wikimedia.org/wikipedia/commons/c/c5/Logo_FC_Bayern_M%C3%BCnchen.svg"></div>
+			<div class="col-xs-2"><img class="img-responsive"  src={{homeTeamLogo}}></div>
 			<div class="col-xs-8"><p class="text-center">{{homeTeamName}} VS {{awayTeamName}} </p></div>
-			<div class="col-xs-2"><img class="img-responsive"  src="/img/Logo_FC_Bayern_München.svg"></div>
+			<div class="col-xs-2"><img class="img-responsive"  src={{awayTeamLogo}}></div>
 		</div>
 	</a>
 </template>

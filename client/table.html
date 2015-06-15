@@ -9,13 +9,12 @@
 		    <thead>
 		      <tr>
 		        <th>#</th>
-		        <th>Team Logo</th>
-		        <th>Team Name</th>
-		        <th>Played Games</th>
-		        <th>Points</th>
-		        <th>Goals</th>
-		        <th>Goals Against</th>
-		      	<th>Goal Difference</th>
+		        <th>Team</th>
+		        <th>Games</th>
+		        <th>Pts</th>
+		        <th>GF</th>
+		        <th>GA</th>
+		      	<th>GD</th>
 		      </tr>
 		    </thead>
 		    <tbody>	    	
@@ -31,8 +30,7 @@
 <template name="standing">
 	<tr>
         <td>{{position}}</td>
-        <td><img class="img-responsive" width="150" height="150" src="http://upload.wikimedia.org/wikipedia/commons/c/c5/Logo_FC_Bayern_M%C3%BCnchen.svg"></td>
-        <td>{{teamName}}</td>
+        <td><img class="img-responsive" width="50" height="50" src={{teamLogo}}>{{teamName}}</td>
         <td>{{playedGames}}</td>
         <td>{{points}}</td>
         <td>{{goals}}</td>
